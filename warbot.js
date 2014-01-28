@@ -3,7 +3,7 @@ var reddit = require('rereddit'),
 
 var schema = {
 	properties: {
-		name: {
+		username: {
 			required: true
 		},
 		password: {
@@ -16,7 +16,7 @@ var schema = {
 prompt.start();
 
 prompt.get(schema, function (err, result) {
-	reddit.login(result.name, result.password).end(function(err,user) {
+	reddit.login(result.username, result.password).end(function(err,user) {
 		if (err != null)
 			console.log(err);
 		else {
@@ -24,7 +24,16 @@ prompt.get(schema, function (err, result) {
 				// Now we have user details
 				if (err != null)
 					console.log(err);
-				else console.log(details);
+				else {
+					console.log(details);
+				}
+			});
+			reddit.unread().as(user).end(function(err, messages) {
+				if (err != null)
+					console.log(err);
+				else {
+					console.log(messages.data.children);
+				}
 			});
 		}
 	});
